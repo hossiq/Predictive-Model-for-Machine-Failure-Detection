@@ -257,6 +257,8 @@ This suggests a trade-off, accepting fewer detections for the benefit of reducin
 
 
 **Conclusion**
+
+
 The results shows the importance of threshold tuning in anomaly detection models and highlight the potential need for a hybrid approach that incorporates the sensitivity of Autoencoders with the specificity of other models. Author suggests that, creating an ensemble that leverages the strengths of both LSTM and Autoencoder methodologies would provide better, consistent output
 
 
