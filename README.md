@@ -133,7 +133,7 @@ plt.show()
 
 **LSTM Model Output**
 
-</pre>
+
 
 <img src="https://github.com/hossiq/image/blob/main/LSTM_Out.PNG?raw=true" alt="rf" style="width: 350px; object-fit: cover;"/><img src="https://github.com/hossiq/image/blob/main/LSTM_Out_2.PNG?raw=true"  alt="smote" style="width: 350px; object-fit: cover;"/>
 
@@ -141,5 +141,111 @@ The loss function is low (0.0258) which quantifies the difference between the pr
 
 Despite achieving perfect accuracy and precision, the model's AUC of 0.5 suggests it fails to effectively predict the critical 'BROKEN' category (only 0.0038% data), indicating a need for further model refinement and data rebalancing to enhance predictive performance for equipment failures
 
-<pre>
+
+**Model Development: Anomaly Detection with Autoencoder**
+
+After observing suboptimal performance with LSTM model, indicated by an AUC of 0.5, this project explored alternative approach (Autoencoder) to improve our predictive maintenance capabilities.
+Autoencoder is a type of neural network used to learn unlabeled data. It works by compressing the input into a latent-space representation and then reconstructing the output from this representation. It particularly suitable at capturing the normal state of the system. The model architecture is streamlined to have a single hidden layer with 14 neurons, chosen to balance model complexity and performance.To prevent overfitting, early stopping is used. And Established threshold at the 95th percentile and the 99th percentile of the normal data's reconstruction error as a criterion for detecting anomalies. Reconstruction error is a measure of the difference between the original input data and the output produced by the autoencoder.
+
+ <pre>
+```
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import train_test_split
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Input, Dense
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
+from tqdm.auto import tqdm
+import matplotlib.pyplot as plt
+
+# Load data
+file_path = '/content/sample_data/Sensor Data/sensor.csv'
+data = pd.read_csv(file_path, parse_dates=['timestamp'])
+data = data[(data['timestamp'].dt.month == 4) | (data['timestamp'].dt.month == 5)| (data['timestamp'].dt.month == 6)]
+
+# Remove column 'sensor_15'
+data.drop('sensor_15', axis=1, inplace=True)
+
+# Split data into normal and broken
+normal_data = data[data['machine_status'] == 'NORMAL'].copy()
+broken_data = data[data['machine_status'] == 'BROKEN'].copy()
+
+# Drop unnecessary columns
+normal_data.drop(['timestamp', 'machine_status'], axis=1, inplace=True)
+broken_data.drop(['timestamp', 'machine_status'], axis=1, inplace=True)
+
+# Normalize features for normal data
+scaler = MinMaxScaler()
+normal_scaled = scaler.fit_transform(normal_data.fillna(normal_data.mean()))
+
+# Split normal data into training and test sets
+X_train, X_test = train_test_split(normal_scaled, test_size=0.2, random_state=42)
+
+# Define autoencoder model architecture
+input_dim = X_train.shape[1]
+encoding_dim = 14  # You might consider tuning this
+
+input_layer = Input(shape=(input_dim,))
+encoder = Dense(encoding_dim, activation='relu')(input_layer)
+decoder = Dense(input_dim, activation='sigmoid')(encoder)
+autoencoder = Model(inputs=input_layer, outputs=decoder)
+
+# Compile the model
+autoencoder.compile(optimizer='adam', loss='mean_squared_error')
+
+# Early stopping to avoid overfitting
+early_stopping = EarlyStopping(monitor='val_loss', patience=5, mode='min', restore_best_weights=True)
+
+# Checkpoint callback to save the best model
+checkpoint = ModelCheckpoint('best_model.h5', save_best_only=True, save_weights_only=True)
+
+# Fit the model with training data
+autoencoder.fit(X_train, X_train,
+                epochs=50,
+                batch_size=256,
+                shuffle=True,
+                validation_split=0.2,
+                verbose=0,
+                callbacks=[TqdmCallback(verbose=2), early_stopping, checkpoint])
+
+# Load the best weights
+autoencoder.load_weights('best_model.h5')
+
+# Evaluate the model on the test set
+test_mse = np.mean(np.power(X_test - autoencoder.predict(X_test), 2), axis=1)
+
+# Prepare the broken data
+broken_scaled = scaler.transform(broken_data.fillna(broken_data.mean()))
+
+# Evaluate the model on the broken set
+broken_mse = np.mean(np.power(broken_scaled - autoencoder.predict(broken_scaled), 2), axis=1)
+
+# Determine the threshold as the 99th percentile of the normal test set MSE
+threshold = np.quantile(test_mse, 0.95)
+
+# Identify anomalies (where the MSE of the reconstruction is greater than the threshold)
+anomalies = broken_mse > threshold
+
+# Plot histograms
+plt.hist(test_mse, bins=50, alpha=0.5, color='blue', label='Normal')
+plt.hist(broken_mse, bins=50, alpha=0.5, color='red', label='Broken')
+plt.axvline(threshold, color='green', linestyle='dashed', linewidth=2, label='Threshold')
+plt.title('Histogram of Mean Squared Errors')
+plt.xlabel('MSE')
+plt.ylabel('Frequency')
+plt.legend()
+plt.show()
+
+# Print results
+print(f'Reconstruction error threshold: {threshold}')
+print(f'Detected anomalies out of broken instances: {np.sum(anomalies)} / {len(broken_mse)}')
+ ```
+</pre>
+
+**Autoencoder Model Output**
+
+<img src="https://github.com/hossiq/image/blob/main/Autoencoder.png?raw=true" alt="rf" style="width: 280px; object-fit: cover;"/><img src="https://github.com/hossiq/image/blob/main/Anomaly_95th.png?raw=true"  alt="smote" style="width: 280px; object-fit: cover;"/><img src="https://github.com/hossiq/image/blob/main/Anomaly_99th.png?raw=true"  alt="ADASYN" style="width: 280px; object-fit: cover;"/>
+
+
 
