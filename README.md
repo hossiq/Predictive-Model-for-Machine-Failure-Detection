@@ -131,6 +131,12 @@ plt.show()
 </pre>
 
 
+**LSTM Model Output**
 
+</pre>
+
+<img src="https://github.com/hossiq/image/blob/main/LSTM_Out.PNG?raw=true" alt="rf" style="width: 280px; object-fit: cover;"/><img src="https://github.com/hossiq/image/blob/main/LSTM_Out_2.PNG?raw=true"  alt="smote" style="width: 280px; object-fit: cover;"/>
+
+ <pre>
 
 
