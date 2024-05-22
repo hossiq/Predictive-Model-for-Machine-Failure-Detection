@@ -245,7 +245,9 @@ print(f'Detected anomalies out of broken instances: {np.sum(anomalies)} / {len(b
 
 **Autoencoder Model Output**
 
-<img src="https://github.com/hossiq/image/blob/main/Autoencoder.png?raw=true" alt="rf" style="width: 280px; object-fit: cover;"/><img src="https://github.com/hossiq/image/blob/main/Anomaly_95th.png?raw=true"  alt="smote" style="width: 280px; object-fit: cover;"/><img src="https://github.com/hossiq/image/blob/main/Anomaly_99th.png?raw=true"  alt="ADASYN" style="width: 280px; object-fit: cover;"/>
+<img src="https://github.com/hossiq/image/blob/main/Anomaly_95th.png?raw=true"  alt="smote" style="width: 280px; object-fit: cover;"/><img src="https://github.com/hossiq/image/blob/main/Anomaly_99th.png?raw=true"  alt="ADASYN" style="width: 280px; object-fit: cover;"/>
+
+<img src="https://github.com/hossiq/image/blob/main/Autoencoder.png?raw=true" alt="rf" style="width: 280px; object-fit: cover;"/>
 
 
 
