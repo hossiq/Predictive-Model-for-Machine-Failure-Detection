@@ -12,7 +12,7 @@ The project proposes an intelligent monitoring system that employs advanced mach
 
 A Water Pump data is collected from the Kaggle website https://www.kaggle.com/datasets/nphantawee/pump-sensor-data for this study. This study used three months of data April, May, and June of 2018. Dataset contains 52 sensors , Timestamp by Minute, and Machine Status. I replace columns with nulls with mean value and dropped duplicates.
 <p align="center">
-  <img src="https://github.com/hossiq/image/blob/main/Machine status.png?raw=true" alt="Plot" width="450"/>
+  <img src="https://github.com/hossiq/image/blob/main/Machine Status.png?raw=true" alt="Plot" width="450"/>
 </p>
 
 
