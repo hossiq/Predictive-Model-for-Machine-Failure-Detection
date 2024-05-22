@@ -135,8 +135,11 @@ plt.show()
 
 </pre>
 
-<img src="https://github.com/hossiq/image/blob/main/LSTM_Out.PNG?raw=true" alt="rf" style="width: 280px; object-fit: cover;"/><img src="https://github.com/hossiq/image/blob/main/LSTM_Out_2.PNG?raw=true"  alt="smote" style="width: 280px; object-fit: cover;"/>
+<img src="https://github.com/hossiq/image/blob/main/LSTM_Out.PNG?raw=true" alt="rf" style="width: 350px; object-fit: cover;"/><img src="https://github.com/hossiq/image/blob/main/LSTM_Out_2.PNG?raw=true"  alt="smote" style="width: 350px; object-fit: cover;"/>
 
- <pre>
+The loss function is low (0.0258) which quantifies the difference between the predicted and actual values and the output indicates a close match between predictions and actual machine statuses. Model shows High Accuracy, Precision, and Recall. Area Under Curve (AUC) = 0.5 indicates that the model is not distinguishing between the positive and negative classes. Usually, an AUC of 0.7 to 0.8 is considered acceptable, 0.8 to 0.9 is considered excellent, and above 0.9 is considered outstanding.
 
+Despite achieving perfect accuracy and precision, the model's AUC of 0.5 suggests it fails to effectively predict the critical 'BROKEN' category (only 0.0038% data), indicating a need for further model refinement and data rebalancing to enhance predictive performance for equipment failures
+
+<pre>
 
