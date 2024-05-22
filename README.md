@@ -250,4 +250,15 @@ print(f'Detected anomalies out of broken instances: {np.sum(anomalies)} / {len(b
 <img src="https://github.com/hossiq/image/blob/main/Autoencoder.png?raw=true" alt="rf" style="width: 280px; object-fit: cover;"/>
 
 
+The model's sensitivity to anomalies increases with a lower reconstruction error threshold, as demonstrated by the 100% detection rate at the 95th percentile (0.0034). At the 99th percentile (0.008), the model exhibits a decrease in sensitivity, detecting 60% of known anomalies. 
+
+This suggests a trade-off, accepting fewer detections for the benefit of reducing false positives and focusing on more significant deviations from the norm. A lower threshold (95th percentile) is suited for high-alert environments, while a higher threshold (99th percentile) may be better for systems where false alarms are particularly disruptive.
+
+
+
+**Conclusion**
+The results shows the importance of threshold tuning in anomaly detection models and highlight the potential need for a hybrid approach that incorporates the sensitivity of Autoencoders with the specificity of other models. Author suggests that, creating an ensemble that leverages the strengths of both LSTM and Autoencoder methodologies would provide better, consistent output
+
+
+
 
